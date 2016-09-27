@@ -10,5 +10,9 @@ M. Sunday
 
 A. Khan
 
+##Sponsor
+
+Dr. Albert Yang - Topaz Labs
+
 ##Project Description:
 
