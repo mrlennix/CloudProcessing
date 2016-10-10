@@ -5,7 +5,7 @@ install:
 	cd ~/
 	git clone https://github.com/torch/distro.git ~/torch --recursive
 	cd ~/torch; bash install-deps;
-	cd ~/torch: ./install.sh
+	cd ~/torch; ./install.sh
 	sudo ~/torch/install/bin/luarocks install loadcaffe
 	cd ~/
 	git clone https://github.com/jcjohnson/neural-style.git
