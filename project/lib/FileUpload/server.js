@@ -21,14 +21,26 @@ app.route('/upload')
             console.log("Uploading: " + filename);
 
             //Path where image will be uploaded
-            fstream = fs.createWriteStream(__dirname + '/img/' + filename);
-            file.pipe(fstream);
-            fstream.on('close', function () {
-                console.log("Upload Finished of " + filename);
-                res.redirect('back');           //where to go next
-            });
-        });
+            if(filename.length > 0)
+            {
+            	fstream = fs.createWriteStream(__dirname + '/img/' + filename);
+            	file.pipe(fstream);
+            	fstream.on('close', function () {
+               		console.log("Upload Finished of " + filename);
+               		res.redirect('back');           //where to go next
+	    	});
+            }
+            else
+            {
+		console.log("No file was uploaded!");
+		console.log("upload a file...");
+		res.redirect('back');
+
+	    }
+
+	});
     });
+
 
 var server = app.listen(668, function() {
     console.log('Listening on port %d', server.address().port);
