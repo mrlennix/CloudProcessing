@@ -4,12 +4,15 @@
   "description": "Server for the cloud application!",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha --reporter spec"
+    "test": "./node_modules/.bin/mocha --reporter spec",
+    "start": " node ./lib/FileUpload/server.js"
   },
   "author": "Senior Design Team",
   "license": "MIT",
   "dependencies": {
-    "chai": "^3.5.0",
-    "mocha": "^3.2.0"
+    "connect-busboy": "0.0.2",
+    "express": "^4.14.1",
+    "fs-extra": "^2.0.0",
+    "sqlite3": "~3.11.0"
   }
 }
