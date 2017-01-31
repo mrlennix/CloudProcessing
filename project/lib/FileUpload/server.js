@@ -6,7 +6,7 @@ var fs = require('fs-extra');       //File System - for file manipulation
 var app = express();
 app.use(busboy());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(express.static(__dirname + '/img')); 
 /* ==========================================================
 Create a Route (/upload) to handle the Form submission
 (handle POST requests to /upload)
