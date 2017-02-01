@@ -3,13 +3,15 @@
 function dbmanager()
 {
 	//connect the database
-	this.connect()
+	this.connect('./topaz.db')
 }
 
-dbmanager.prototype.connect = function()
+dbmanager.prototype.sqlite3 = require('sqlite3').verbose();
+
+dbmanager.prototype.connect = function(dbpath)
 {
 	//connect to database
-	console.log("connecting to database");
+	this.db = new this.sqlite3.Database(dbpath);
 	return 0;
 
 }

@@ -9,7 +9,8 @@ describe ("Database Test",function()
         {
             it("Expected Value",function()
             {
-                expect(1).to.equals(dbmanager.connect() );
+                console.log(dbmanager.db);
+                expect(true).to.equals(dbmanager.db.open);
             });
         });
 
