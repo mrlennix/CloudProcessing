@@ -3,7 +3,7 @@
 function dbmanager()
 {
 	//connect the database
-	this.connect('./topaz.db')
+	this.connect('./lib/database/topaz.db')
 }
 
 dbmanager.prototype.sqlite3 = require('sqlite3').verbose();
@@ -12,15 +12,29 @@ dbmanager.prototype.connect = function(dbpath)
 {
 	//connect to database
 	this.db = new this.sqlite3.Database(dbpath);
-	return 0;
+	
 
 }
 
-dbmanager.prototype.getImage = function()
+dbmanager.prototype.getImage = function( fname, uname)
 {
 	//get image from database
-	console.log("get image");
-	return 0;
+	var q="SELECT image FROM IMAGE WHERE fname='"+fname+"' AND uname='"+uname+"';";
+	
+	this.db.all(q, function(err,rows)
+	{
+		if(err)
+		{
+			//fix later so it doesn't crash server
+			console.log("Err lol");
+			throw err;
+			
+		}
+		var image=rows[0].image;
+		cb(null, image);
+	});
+	return image;
+	
 
 }
 

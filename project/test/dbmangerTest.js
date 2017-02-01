@@ -18,7 +18,10 @@ describe ("Database Test",function()
         {
             it("Expected Value", function () 
             {
-                expect(1).to.equals(dbmanager.getImage());
+                var image = dbmanager.getImage( "koala.jpg" ,"root" );
+                console.log(image);
+
+                expect(1).to.equals(   0  );
             });
         });
 
