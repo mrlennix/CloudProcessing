@@ -16,24 +16,30 @@ dbmanager.prototype.connect = function(dbpath)
 
 }
 
-dbmanager.prototype.getImage = function( fname, uname)
+dbmanager.prototype.getImage = function( fname, uname )
 {
-	//get image from database
-	var q="SELECT image FROM IMAGE WHERE fname='"+fname+"' AND uname='"+uname+"';";
-	
-	this.db.all(q, function(err,rows)
-	{
-		if(err)
+
+	return new Promise( (res, rej) => {
+		
+		//get image from database
+		var q="SELECT image FROM IMAGE WHERE fname='"+fname+"' AND uname='"+uname+"';";
+		
+		this.db.all(q, function(err,rows)
 		{
-			//fix later so it doesn't crash server
-			console.log("Err lol");
-			throw err;
-			
-		}
-		var image=rows[0].image;
-		cb(null, image);
-	});
-	return image;
+			if(err)
+			{
+				//fix later so it doesn't crash server
+				console.log("Err lol");
+				rej("ERROR");
+				throw err;
+				
+			}
+			var image=rows[0].image;
+			console.log( "IMAGE:");
+			console.log( image );
+			res( image );
+		});
+	} );
 	
 
 }

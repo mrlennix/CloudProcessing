@@ -4,8 +4,9 @@
   "description": "Server for the cloud application!",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha --reporter spec",
-    "start": " node ./lib/FileUpload/server.js"
+    "test": "mocha --reporter spec",
+    "start": " node ./lib/FileUpload/server.js",
+    "apidoc": "apidoc -i project/ -o docs/"
   },
   "author": "Senior Design Team",
   "license": "MIT",
@@ -14,5 +15,10 @@
     "express": "^4.14.1",
     "fs-extra": "^2.0.0",
     "sqlite3": "~3.1.8"
+  },
+  "devDependencies": {
+    "apidoc": "^0.17.5",
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0"
   }
 }
