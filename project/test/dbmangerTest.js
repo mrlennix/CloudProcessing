@@ -18,10 +18,12 @@ describe ("Database Test",function()
         {
             it("Expected Value", function () 
             {
-                var image = dbmanager.getImage( "koala.jpg" ,"root" );
-                console.log(image);
+                dbmanager.getImage( "koala.jpg" ,"root" )
+                .then( ( image ) => {
+                    //console.log("OUTPUT:" + image);
+                    expect(undefined).to.not.equals(image)
+                } );
 
-                expect(1).to.equals(   0  );
             });
         });
 

@@ -1,1 +1,0 @@
-define({  "name": "cloud-server",  "version": "0.0.0",  "description": "Server for the cloud application!",  "sampleUrl": false,  "defaultVersion": "0.0.0",  "apidoc": "0.3.0",  "generator": {    "name": "apidoc",    "time": "2017-02-01T02:10:52.165Z",    "url": "http://apidocjs.com",    "version": "0.17.5"  }});
