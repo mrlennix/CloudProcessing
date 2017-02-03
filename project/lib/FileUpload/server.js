@@ -29,7 +29,7 @@ app.route('/upload')
             	fstream.on('close', function () {
                		console.log("Upload Finished of " + filename);
 
-		Jimp.read("./img/Koala.jpg", function (err, image) {
+		Jimp.read("./img/"+filename, function (err, image) {
     			if (err) throw err;
     			image.resize(256, 256)            // resize
          			.quality(60)                 // set JPEG quality
