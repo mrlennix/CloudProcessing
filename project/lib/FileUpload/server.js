@@ -8,6 +8,7 @@ var app = express();
 app.use(busboy());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(__dirname + '/img')); 
+
 /* ==========================================================
 Create a Route (/upload) to handle the Form submission
 (handle POST requests to /upload)
@@ -35,18 +36,39 @@ app.route('/upload')
          			.quality(60)                 // set JPEG quality
          			.greyscale()                 // set greyscale
          			.write("./img/edited/edited_"+filename); // save
+                    res.redirect('image?fname=edited_' + filename);           //where to go next
+
 		});
-               		res.redirect('back');           //where to go next
+               		
 	    	});
+
             }
             else
             {
-		console.log("No file was uploaded!");
-		console.log("upload a file...");
-		res.redirect('back');
+		          console.log("No file was uploaded!");
+		          console.log("upload a file...");
+		          res.redirect('back');
 	    }
 	});
     });
+
+
+    // GET method route
+    //res.sendFile
+    app.get('/image', function (req, res) {
+
+    if(fs.existsSync(path.join(__dirname, 'img/edited', req.query.fname)) == false)
+        {
+            res.send("File not fount!");
+        }
+    else{
+        res.sendFile(path.join(__dirname, 'img/edited', req.query.fname));
+    }
+
+    })
+
 var server = app.listen(668, function() {
     console.log('Listening on port %d', server.address().port);
 });
+
+
