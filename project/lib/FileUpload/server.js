@@ -2,7 +2,7 @@ var express = require('express');    //Express Web Server
 var busboy = require('connect-busboy'); //middleware for form/file upload
 var path = require('path');     //used for file path
 var fs = require('fs-extra');       //File System - for file manipulation
-
+var Caman = require('caman').Caman;
 var app = express();
 app.use(busboy());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -27,6 +27,13 @@ app.route('/upload')
             	file.pipe(fstream);
             	fstream.on('close', function () {
                		console.log("Upload Finished of " + filename);
+			Caman("./img/"+filename, function () {
+  				this.brightness(25);
+  				this.sepia(60);
+				this.render(function () {
+    				this.save("./img/edited/edited_"+filename);
+  			});
+		});
                		res.redirect('back');           //where to go next
 	    	});
             }
