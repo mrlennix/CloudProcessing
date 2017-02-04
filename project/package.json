@@ -11,10 +11,13 @@
   "author": "Senior Design Team",
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.16.0",
     "connect-busboy": "0.0.2",
     "express": "^4.14.1",
     "fs-extra": "^2.0.0",
     "jimp": "^0.2.27",
+    "mongoose": "^4.8.1",
+    "nodeman": "^1.1.2",
     "sqlite3": "~3.1.8"
   },
   "devDependencies": {
