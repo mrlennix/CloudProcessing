@@ -28,19 +28,19 @@ app.route('/upload')
             	fstream = fs.createWriteStream(__dirname + '/img/' + filename);
             	file.pipe(fstream);
             	fstream.on('close', function () {
-               		console.log("Upload Finished of " + filename);
+               		console.log("Upload Finished for " + filename);
 
-		Jimp.read("./img/"+filename, function (err, image) {
-    			if (err) throw err;
-    			image.resize(256, 256)            // resize
-         			.quality(60)                 // set JPEG quality
-         			.greyscale()                 // set greyscale
-         			.write("./img/edited/edited_"+filename); // save
-                    res.redirect('image?fname=edited_' + filename);           //where to go next
+            		Jimp.read("./img/"+filename, function (err, image) {
+                			if (err) throw err;
+                			image.resize(256, 256)            // resize
+                     			.quality(60)                 // set JPEG quality
+                     			.greyscale()                 // set greyscale
+                     			.write("./img/edited/edited_"+filename); // save
+                                res.redirect('image?fname=edited_' + filename);           //where to go next
 
-		});
+            		});
                		
-	    	});
+	    	    });
 
             }
             else
@@ -48,7 +48,7 @@ app.route('/upload')
 		          console.log("No file was uploaded!");
 		          console.log("upload a file...");
 		          res.redirect('back');
-	    }
+	        }
 	});
     });
 
@@ -59,13 +59,14 @@ app.route('/upload')
 
     if(fs.existsSync(path.join(__dirname, 'img/edited', req.query.fname)) == false)
         {
-            res.send("File not fount!");
+            res.send("File not found!");
         }
     else{
         res.sendFile(path.join(__dirname, 'img/edited', req.query.fname));
     }
 
     })
+
 
 var server = app.listen(668, function() {
     console.log('Listening on port %d', server.address().port);
