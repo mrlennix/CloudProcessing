@@ -5,19 +5,36 @@ describe ("Server Test",function()
     {
         describe("test 1",function() {
 
-                it("Expected Value", function () {
-                        expect("").to.equals("");
+                it("Get Image", function () {
+                        expect("").to.equals("1");
                     }
                 );
             }
         );
 
-        describe("test 2",function()
+        describe("Post image",function()
             {
-                it("Expected Value", function () {
-                        expect("s").to.equals("se");
-                    }
-                );
+                it("Expected Value", function () 
+                {
+                      var request = require("request");
+                      var fs = require('fs');  
+                     var formData = 
+                     {
+                        image: fs.createReadStream(__dirname+'/pokemon.jpeg'),
+                        blur: 12,
+                        quality: 100
+                     }
+                     
+                     request.post({url:'http://127.0.0.1:668/upload',formData:formData}, (err,httpResponse,body)=>
+                     {
+                        var x;
+                        if(err)
+                            {x=0;}
+                        else {x=1;console.log(body)}
+
+                        expect(1).to.equals(x);
+                     });
+                });
             }
 
         );
