@@ -12,17 +12,17 @@ describe ("Server Test",function()
             }
         );
 
-        describe("Post image",function()
+        describe("Expected Value",function()
             {
-                it("Expected Value", function () 
+                it("Post Image", function () 
                 {
                       var request = require("request");
                       var fs = require('fs');  
                      var formData = 
                      {
-                        image: fs.createReadStream(__dirname+'/pokemon.jpeg'),
-                        blur: 12,
-                        quality: 100
+                        fname: fs.createReadStream(__dirname+'/miley.jpg'),
+                        gaussian: 50,
+                        posterize: 10
                      }
                      
                      request.post({url:'http://127.0.0.1:668/upload',formData:formData}, (err,httpResponse,body)=>

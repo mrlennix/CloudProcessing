@@ -3,6 +3,8 @@ var busboy = require('connect-busboy'); //middleware for form/file upload
 var path = require('path');     //used for file path
 var fs = require('fs-extra');       //File System - for file manipulation
 var Jimp = require("jimp");
+var Edit = require('./edit');
+var JimpEdit = require('./jimp_edit');
 var app = express();
 app.use(busboy());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -18,8 +20,10 @@ app.route('/upload').post(function (req, res, next)
     var fstream;
     //temp. store stream variables
     var Field ={}; //mapinging of key:value of the input stream
-    var inames =[]//names of each of the images
-    var icount=0;//keeps track of how many images
+    var edit;// store the strategy used (currently only jimp)
+    var decor = new Edit.Decorator();
+    var Jimp;//used for jimp edit if uses decide to use jimp editor
+    var JSTYLES = JimpEdit.STYLE;//Theses are the jimples styles that come from the jimp_edit module
     var path = '../../img/edited/edited_';
     //pipe for stream
     req.pipe(req.busboy);
@@ -27,14 +31,20 @@ app.route('/upload').post(function (req, res, next)
     req.busboy.on('field',function(n,v,t,vt)
     {
         //for each field in the stream store output
-        Field[n]=v;
+        if( n in decor.getValues() )
+        {
+            let temp =  decor.getValues()[n] +","+v;
+            
+            decor.addValues(n , temp.split(',') );
+        }
+        else decor.addValues(n,v);
     });
 
     //on files store them int the users image folder
     req.busboy.on('file', function (fieldname, file, filename) 
     {
-        inames[icount++]=filename;
-            
+        
+        decor.addValues(fieldname,filename);
         console.log("Uploading: " + filename);
         //Path where image will be uploaded
         //TODO: also check to see if its a image return status code of 400 (Bad Request)
@@ -60,23 +70,23 @@ app.route('/upload').post(function (req, res, next)
     });
 
     //when busboy finishes run editing algorithm below
-    req.busboy.on('finish',()=>
-    {
-        //TODO: If any of the values are null, then
-        //set them to the defualt min value.
-        Jimp.read("../img/"+inames[icount-1], function (err, image)
+    req.busboy.on('finish',()=>{
+        
+        console.log(decor.getValues());
+        
+        for(var key in decor.getValues() )
         {
-            //TODO: If error delete image from server and return
-            //a status code of 100
-            if (err){throw err;} 
-                    
-            image.resize(256, 256) // resize
-            .quality(parseInt(Field['quality'])) // set JPEG quality
-            .greyscale()// set greyscale
-            .write("./../img/edited/edited_"+inames[icount-1]); // save
-            res.redirect('image?fname=edited_' + inames[icount-1]);           //where to go next
+            
+            if(key in JSTYLES) decor.addStyle( key ,JSTYLES[key] );
+        }
+        
+        edit = new Edit( new JimpEdit(decor) );
+        var done = edit.algorithm();
+         done.then( (fname) =>{
+            res.redirect('image?fname=edited_'+fname );           //where to go next
 
         });
+
     });
 
 });
