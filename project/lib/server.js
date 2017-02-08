@@ -1,8 +1,7 @@
 var express = require('express');    //Express Web Server
 var busboy = require('connect-busboy'); //middleware for form/file upload
 var path = require('path');     //used for file path
-var fs = require('fs-extra');       //File System - for file manipulation
-var Jimp = require("jimp");
+var fs = require('fs-extra');
 var Edit = require('./edit');
 var JimpEdit = require('./jimp_edit');
 var app = express();
@@ -106,6 +105,10 @@ app.get('/image', function (req, res)
     {
         res.sendFile( path.join(__dirname, des, req.query.fname) );
     }
+
+});
+
+app.put('/put',(req,res)=>{
 
 });
 

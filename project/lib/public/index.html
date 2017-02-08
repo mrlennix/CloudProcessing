@@ -1,14 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="APP">
-<head>
-    <meta charset="UTF-8">
-    <title>angular file upload</title>
-</head>
-
-<body>
-        <form method='post' action='upload' enctype="multipart/form-data">
-        <input type='file' name='fileUploaded' accept='image/*'>
-        <input type='submit'>
-	</form>
- </body>
+    <head>
+        <meta charset="UTF-8">
+        <title>Topaz Labs</title>
+        <link rel ="stylesheet" type = "text/css" href="style.css">
+    </head>
+    <body bgcolor= "#999999" > 
+        <center>
+            <h1 class = "logo"></h1>
+            
+            <form method='post' action='upload' enctype="multipart/form-data">
+                Select color: <input type = 'color' name="colorSelection"></br>
+                Crop size: <input type="number" name="cropValue" min="20" max="200"></br>
+                <label class="radio-inline"><input type="radio" name="greyscale" value="1">Greyscale</label>
+                <label class="radio-inline"><input type="radio" name="blur" value="1">Blur</label>
+                <input type='file' name='fname' accept='image/*'></br>
+                <!--Select color: <input type = 'color'></br>
+                Crop size: <input type="number" name="points" min="20" max="200"></br>-->
+                Submit: <input type='submit'></br>
+            </form>
+        </center>
+    </body>
 </html>
