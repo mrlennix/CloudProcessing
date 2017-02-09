@@ -21,7 +21,7 @@ describe ("Server Test",function()
                      var formData = 
                      {
                         fname: fs.createReadStream(__dirname+'/miley.jpg'),
-                        gaussian: 50,
+                        //gaussian: 50,
                         posterize: 10
                      }
                      
