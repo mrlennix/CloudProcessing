@@ -14,16 +14,18 @@ JimpEdit.prototype.algorithm = function()
 	//returns promise so others know when to execute
 	return new Promise ( (res,rej) => {
 		
-		
-		Jimp.read('../img/'+value['fname'])
-		.then( function(image)
+
+		Jimp.read('./public/img/'+value['fname']).then( function(image)
+
 		{
 			for (let key in style)
 			{
 				style[key](image,value[key]);
 
 			}
-			image.write("./../img/edited/edited_" + value['fname']);
+
+			image.write("./public/img/edited/edited_"+value['fname']);
+
 			res(value['fname']);
 
 		}).catch( (err) => { console.log(err);rej(undefined); } );

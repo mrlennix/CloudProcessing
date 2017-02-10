@@ -50,7 +50,7 @@ app.route('/upload').post(function (req, res, next)
         //TODO: also check to see if its a image return status code of 400 (Bad Request)
         if(filename.length > 0)
         {
-         	fstream = fs.createWriteStream(__dirname + '/../img/' + filename);
+         	fstream = fs.createWriteStream(__dirname + '/public/img/' + filename);
             	
             file.pipe(fstream);
 
@@ -83,6 +83,7 @@ app.route('/upload').post(function (req, res, next)
         edit = new Edit( new JimpEdit(decor) );
         var done = edit.algorithm();
          done.then( (fname) =>{
+
             res.redirect('image?fname=edited_'+fname );           //where to go next
 
         });
@@ -96,11 +97,11 @@ app.route('/upload').post(function (req, res, next)
 app.get('/image', function (req, res) 
 {
     //path to edited folder
-    var des = '../img/edited';
-
-    if( fs.existsSync( path.join(__dirname, "../img/edited", req.query.fname ) ) == false)
+    var des = 'public/img/edited';
+    console.log( fs.existsSync( path.join(__dirname, "/public/img/edited", req.query.fname ) ) );
+    if( fs.existsSync( path.join(__dirname, "/public/img/edited", req.query.fname ) ) == false)
     {
-        res.status(400).send("File not fount!");
+        res.status(400).send("File not fount!  " +path.join(__dirname, "/public/img/edited", req.query.fname ));
     }
     else
     {
