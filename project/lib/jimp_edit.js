@@ -15,14 +15,15 @@ JimpEdit.prototype.algorithm = function()
 	return new Promise ( (res,rej) => {
 		
 		
-		Jimp.read('../img/'+value['fname']).then( function(image)
+		Jimp.read('../img/'+value['fname'])
+		.then( function(image)
 		{
 			for (let key in style)
 			{
 				style[key](image,value[key]);
 
 			}
-			image.write("./../img/edited/edited_"+value['fname']);
+			image.write("./../img/edited/edited_" + value['fname']);
 			res(value['fname']);
 
 		}).catch( (err) => { console.log(err);rej(undefined); } );
@@ -35,9 +36,9 @@ var STYLE =
 	flip: (image,v)=>{  image.flip(v[0],v[1]);},
 	brightness: (image,v)=>{image.brightness(parseInt(v))},
 	fade: (image,v)=>{image.fade(parseInt(v))},
-	background: (image,v)=>{image.background(v)},
+	background: (image,v)=>{image.background(''+v)},
 	gaussian: (image,v)=>{image.gaussian(parseInt(v))},
-	blur: (image,v)=>{ console.log('BLURR!') },
+	blur: (image,v)=>{ image.blur( parseInt(v) )},
 	posterize: (image,v)=>{image.posterize(parseInt(v))},
 	sepia: (image,v)=>{image.sepia()},
 	greyscale: (image,v)=>{image.greyscale()},
