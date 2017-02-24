@@ -3,6 +3,8 @@ var busboy = require('connect-busboy'); //middleware for form/file upload
 var path = require('path');     //used for file path
 var fs = require('fs-extra');       //File System - for file manipulation
 var Jimp = require("jimp");
+// var mongoose    = require('mongoose');
+// var passport    = require('passport');
 var Edit = require('./edit');
 var JimpEdit = require('./jimp_edit');
 var app = express();
@@ -17,6 +19,24 @@ Express v4  Route definition
 app.route('/upload').post(function (req, res, next) 
 {
     
+
+
+    // //__________________Connection to MongoDB___________________________________________
+    // // Retrieve
+    // var MongoClient = require('mongodb').MongoClient;
+
+    // // Connect to the db
+    // MongoClient.connect("mongodb://localhost/node-rest-auth", function(err, db) {
+    //   if(!err) {
+    //     console.log("We are connected");
+    //   }
+    //   else {
+
+    //     console.log("Connection to...... failed");
+    //   }
+    // });
+
+    //_________________________________________________________________________________
     var fstream;
     //temp. store stream variables
     var Field ={}; //mapinging of key:value of the input stream
@@ -93,6 +113,8 @@ app.route('/upload').post(function (req, res, next)
 });
 
 
+
+
 // GET method route
 app.get('/image', function (req, res) 
 {
@@ -101,7 +123,7 @@ app.get('/image', function (req, res)
     console.log( fs.existsSync( path.join(__dirname, "/public/img/edited", req.query.fname ) ) );
     if( fs.existsSync( path.join(__dirname, "/public/img/edited", req.query.fname ) ) == false)
     {
-        res.status(400).send("File not fount!  " +path.join(__dirname, "/public/img/edited", req.query.fname ));
+        res.status(400).send("File not found!  " +path.join(__dirname, "/public/img/edited", req.query.fname ));
     }
     else
     {
