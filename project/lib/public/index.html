@@ -9,16 +9,49 @@
         <center>
             <h1 class = "logo"></h1>
             
-            <form method='post' action='upload' enctype="multipart/form-data">
-                Select color: <input type = 'color' name="background1"></br>
-                Crop size: <input type="number" name="cropValue" min="1" max="200"></br>
-                <label class="radio-inline"><input type="radio" name="greyscale" value="1">Greyscale</label>
-                <label class="radio-inline"><input type="radio" name="blur" value="1">Blur</label>
+            <form autocomplete="off"    method='post' action='upload' enctype="multipart/form-data">
+                <!-- Select color: <input type = 'color' name="background1"></br> -->
+                Crop size: <input type="number" name="cropValue" min="1" max="200"></br></br>
+                <label class="radio-inline"><input name="greyscale" id="greycheck" type="checkbox" value="0" onclick="showgrey(this)" >Greyscale</label>
+                <label class="radio-inline"><input name="blur" id="blurcheck" type="checkbox" value="0" onclick="showblur(this)" >Blur</label>
+                <label class="radio-inline"><input name="invert" type="checkbox" value="0" >Invert</label>
+                <label id="greylabel" style="display: none;">Greyscale Level:</label>
+                <input type="number"  id="greyinput" min="1" max="100" style="display: none;" onchange="greyvaluechange(this)"></br>
+                <label id="blurlabel" style="display: none;">Blur Level:</label>
+                <input type="number"  id="blurinput"  min="1" max="100" style="display: none;" onchange="blurvaluechange(this)"></br>
                 <input type='file' name='fname' accept='image/*'></br>
                 <!--Select color: <input type = 'color'></br>
                 Crop size: <input type="number" name="points" min="20" max="200"></br>-->
                 Submit: <input type='submit'></br>
             </form>
         </center>
+        <script>
+            function greyvaluechange(txtbox) {
+                document.getElementById("greycheck").value=document.getElementById("greyinput").value;
+            }
+            function blurvaluechange(txtbox) {
+                document.getElementById("blurcheck").value=document.getElementById("blurinput").value;
+            }
+            function showblur(chkbox) {
+                if(chkbox.checked){
+                    document.getElementById("blurlabel").style.display="block";
+                    document.getElementById("blurinput").style.display="block";
+                }
+                else {
+                    document.getElementById("blurlabel").style.display="none";
+                    document.getElementById("blurinput").style.display="none";
+                }
+            }
+            function showgrey(chkbox) {
+                if(chkbox.checked){
+                    document.getElementById("greylabel").style.display="block";
+                    document.getElementById("greyinput").style.display="block";
+                }
+                else {
+                    document.getElementById("greylabel").style.display="none";
+                    document.getElementById("greyinput").style.display="none";
+                }
+            }
+        </script>
     </body>
 </html>

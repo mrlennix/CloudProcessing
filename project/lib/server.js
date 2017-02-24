@@ -93,7 +93,8 @@ app.route('/upload').post(function (req, res, next)
     req.busboy.on('finish',()=>{
         
         console.log(decor.getValues());
-        
+        // decor.getValues().background1 = "0x" + decor.getValues().background1.substr(1) + "FF";
+
         for(var key in decor.getValues() )
         {
             
@@ -120,7 +121,8 @@ app.get('/image', function (req, res)
 {
     //path to edited folder
     var des = 'public/img/edited';
-    console.log( fs.existsSync( path.join(__dirname, "/public/img/edited", req.query.fname ) ) );
+    // fresh90
+    
     if( fs.existsSync( path.join(__dirname, "/public/img/edited", req.query.fname ) ) == false)
     {
         res.status(400).send("File not found!  " +path.join(__dirname, "/public/img/edited", req.query.fname ));
