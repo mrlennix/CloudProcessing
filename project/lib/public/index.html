@@ -10,15 +10,18 @@
             <h1 class = "logo"></h1>
             
             <form method='post' action='upload' enctype="multipart/form-data">
+                
                 Select color: <input type = 'color' name="background1"></br>
                 Crop size: <input type="number" name="cropValue" min="1" max="200"></br>
                 <label class="radio-inline"><input type="radio" name="greyscale" value="1">Greyscale</label>
-                <label class="radio-inline"><input type="radio" name="blur" value="1">Blur</label>
+                <label class="radio-inline"><input type="radio" name="blur" value="1">Blur</label></br>
                 <input type='file' name='fname' accept='image/*'></br>
+                
                 <!--Select color: <input type = 'color'></br>
                 Crop size: <input type="number" name="points" min="20" max="200"></br>-->
                 Submit: <input type='submit'></br>
             </form>
+            
         </center>
     </body>
 </html>

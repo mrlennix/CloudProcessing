@@ -84,7 +84,7 @@ app.route('/upload').post(function (req, res, next)
         {
             console.log("No file was uploaded!");
             console.log("upload a file...");
-            res.redirect(300,'back');
+            res.redirect(300);
 	    }
         
     });
