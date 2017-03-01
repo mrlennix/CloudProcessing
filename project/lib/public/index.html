@@ -4,24 +4,62 @@
         <meta charset="UTF-8">
         <title>Topaz Labs</title>
         <link rel ="stylesheet" type = "text/css" href="style.css">
+        
     </head>
     <body bgcolor= "#999999" > 
         <center>
             <h1 class = "logo"></h1>
             
-            <form method='post' action='upload' enctype="multipart/form-data">
-                
-                Select color: <input type = 'color' name="background1"></br>
-                Crop size: <input type="number" name="cropValue" min="1" max="200"></br>
-                <label class="radio-inline"><input type="radio" name="greyscale" value="1">Greyscale</label>
-                <label class="radio-inline"><input type="radio" name="blur" value="1">Blur</label></br>
+<!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+
+            <form method='post' action='../upload' enctype="multipart/form-data">
+            <form autocomplete="off"    method='post' action='../upload' enctype="multipart/form-data">
+
+                <label class="radio-inline"><input name="gaussian" id="gaussiancheck" type="checkbox"  onclick="showgaussian(this)" >Gaussian</label>
+                <label class="radio-inline"><input name="blur" id="blurcheck" type="checkbox" onclick="showblur(this)" >Blur</label>
+                <label class="radio-inline"><input name="invert" type="checkbox" value="0" >Invert</label>
+                <label class="radio-inline"><input name="greyscale" type="checkbox" value="0" >Greyscale</label>
+                <label id="gaussianlabel" style="display: none;">Gaussian Percentage:</label>
+                <input type="number"  id="gaussianinput" min="1" max="10" style="display: none;" onchange="gaussianvaluechange(this)"></br>
+                <label id="blurlabel" style="display: none;">Blur Percentage:</label>
+                <input type="number"  id="blurinput"  min="1" max="100" style="display: none;" onchange="blurvaluechange(this)"></br>
+
                 <input type='file' name='fname' accept='image/*'></br>
                 
                 <!--Select color: <input type = 'color'></br>
                 Crop size: <input type="number" name="points" min="20" max="200"></br>-->
                 Submit: <input type='submit'></br>
             </form>
-            
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
         </center>
+        <script>
+            function gaussianvaluechange(txtbox) {
+            document.getElementById("gaussiancheck").value=document.getElementById("gaussianinput").value;
+            }
+            function blurvaluechange(txtbox) {
+                document.getElementById("blurcheck").value=document.getElementById("blurinput").value;
+            }
+            function showblur(chkbox) {
+                if(chkbox.checked){
+                    document.getElementById("blurlabel").style.display="block";
+                    document.getElementById("blurinput").style.display="block";
+                }
+                else {
+                    document.getElementById("blurlabel").style.display="none";
+                    document.getElementById("blurinput").style.display="none";
+                }
+            }
+            function showgaussian(chkbox) {
+                if(chkbox.checked){
+                    document.getElementById("gaussianlabel").style.display="block";
+                    document.getElementById("gaussianinput").style.display="block";
+                }
+                else {
+                    document.getElementById("gaussianlabel").style.display="none";
+                    document.getElementById("gaussianinput").style.display="none";
+                }
+            }
+        </script>
     </body>
 </html>

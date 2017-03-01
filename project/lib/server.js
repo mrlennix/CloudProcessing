@@ -1,42 +1,27 @@
 var express = require('express');    //Express Web Server
 var busboy = require('connect-busboy'); //middleware for form/file upload
+var form = ('connect-form');
 var path = require('path');     //used for file path
 var fs = require('fs-extra');       //File System - for file manipulation
 var Jimp = require("jimp");
-// var mongoose    = require('mongoose');
-// var passport    = require('passport');
+fs = require('fs');
+var mongoose    = require('mongoose');
+var passport    = require('passport');
 var Edit = require('./edit');
 var JimpEdit = require('./jimp_edit');
 var app = express();
 app.use(busboy());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '/')));
  
 /* ==========================================================
 Create a Route (/upload) to handle the Form submission
 (handle POST requests to /upload)
 Express v4  Route definition
 ============================================================ */
-app.route('/upload').post(function (req, res, next) 
+
+app.route('/upload').post( function (req, res, next) 
 {
     
-
-
-    // //__________________Connection to MongoDB___________________________________________
-    // // Retrieve
-    // var MongoClient = require('mongodb').MongoClient;
-
-    // // Connect to the db
-    // MongoClient.connect("mongodb://localhost/node-rest-auth", function(err, db) {
-    //   if(!err) {
-    //     console.log("We are connected");
-    //   }
-    //   else {
-
-    //     console.log("Connection to...... failed");
-    //   }
-    // });
-
-    //_________________________________________________________________________________
     var fstream;
     //temp. store stream variables
     var Field ={}; //mapinging of key:value of the input stream
@@ -47,7 +32,8 @@ app.route('/upload').post(function (req, res, next)
     var path = '../../img/edited/edited_';
     //pipe for stream
     req.pipe(req.busboy);
-        
+
+
     req.busboy.on('field',function(n,v,t,vt)
     {
         //for each field in the stream store output
@@ -57,6 +43,7 @@ app.route('/upload').post(function (req, res, next)
             
             decor.addValues(n , temp.split(',') );
         }
+
         else decor.addValues(n,v);
     });
 
@@ -93,7 +80,8 @@ app.route('/upload').post(function (req, res, next)
     req.busboy.on('finish',()=>{
         
         console.log(decor.getValues());
-        
+        // decor.getValues().background1 = "0x" + decor.getValues().background1.substr(1) + "FF";
+
         for(var key in decor.getValues() )
         {
             
@@ -103,8 +91,9 @@ app.route('/upload').post(function (req, res, next)
         edit = new Edit( new JimpEdit(decor) );
         var done = edit.algorithm();
          done.then( (fname) =>{
+            res.redirect('image?fname=edited_'+fname);           //where to go next
 
-            res.redirect('image?fname=edited_'+fname );           //where to go next
+
 
         });
 
@@ -120,7 +109,8 @@ app.get('/image', function (req, res)
 {
     //path to edited folder
     var des = 'public/img/edited';
-    console.log( fs.existsSync( path.join(__dirname, "/public/img/edited", req.query.fname ) ) );
+    // fresh90
+    
     if( fs.existsSync( path.join(__dirname, "/public/img/edited", req.query.fname ) ) == false)
     {
         res.status(400).send("File not found!  " +path.join(__dirname, "/public/img/edited", req.query.fname ));
@@ -132,9 +122,48 @@ app.get('/image', function (req, res)
 
 });
 
-var server = app.listen(668, function() 
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// user login and authentication. whould have the capability 
+//of connecting to databse, take input and store on the database
+app.get('/', function(req, res) {
+
+    res.sendFile(path.join(__dirname + '/loginHTML.html'));
+
+});
+
+
+app.get('/getemail', function(req, res, next) {
+
+
+        var username = req.query.uname;
+        var password = req.query.psw;
+ 
+         if (username != "") {
+             //res.send(username);
+             console.log("user name: " + username);
+             console.log('Password:  ' + password);
+             res.redirect('/public');
+         } else {
+            console.log("Input is empty >>>>>>>");
+             res.redirect(300);
+         }
+        //res.send("Authorized!");
+
+        /*get user data and check with database for authenticity
+
+        if confirmed{
+              redirect to "public/index.html" page
+        }
+        else {
+                redirect to "login" page
+        }*/
+
+});
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+var server = app.listen(668, function(req, res, next) 
 {
-    console.log('Listening on port %d', server.address().port);
+    console.log('Listening on port %d', server.address().port); 
+
 });
 
 

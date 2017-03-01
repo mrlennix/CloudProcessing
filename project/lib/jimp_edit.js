@@ -27,6 +27,8 @@ JimpEdit.prototype.algorithm = function()
 			image.write("./public/img/edited/edited_"+value['fname']);
 
 			res(value['fname']);
+			
+
 
 		}).catch( (err) => { console.log(err);rej(undefined); } );
 	});
