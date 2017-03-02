@@ -134,19 +134,37 @@ app.get('/', function(req, res) {
 
 app.get('/getemail', function(req, res, next) {
 
-
+        
         var username = req.query.uname;
         var password = req.query.psw;
- 
-         if (username != "") {
+        var confirm_pass = req.query.confpsw;
+        username = String(username);
+        var password = String(password);
+        var confirm_pass = String(confirm_pass);
+        
+
+        //These if statements were created for testing purposes. they should 
+        //rather be used to check inputs existence in database
+         if ( String(confirm_pass) === "undefined") {
              //res.send(username);
              console.log("user name: " + username);
              console.log('Password:  ' + password);
              res.redirect('/public');
-         } else {
+
+         } 
+         else if ((confirm_pass != "undefined")) {
+             //res.send(username);
+             console.log("user name: " + username);
+             console.log('Password:  ' + password);
+             console.log('Conf-Password:  ' + confirm_pass);
+             res.redirect('/');
+         }
+         else {
+
             console.log("Input is empty >>>>>>>");
              res.redirect(300);
          }
+
         //res.send("Authorized!");
 
         /*get user data and check with database for authenticity
