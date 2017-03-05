@@ -139,9 +139,8 @@ app.get('/getemail', function(req, res, next) {
         var password = req.query.psw;
         var confirm_pass = req.query.confpsw;
         username = String(username);
-        var password = String(password);
-        var confirm_pass = String(confirm_pass);
-        
+        password = String(password);
+        confirm_pass = String(confirm_pass);
 
         //These if statements were created for testing purposes. they should 
         //rather be used to check inputs existence in database
@@ -164,9 +163,7 @@ app.get('/getemail', function(req, res, next) {
             console.log("Input is empty >>>>>>>");
              res.redirect(300);
          }
-
-        //res.send("Authorized!");
-
+         
         /*get user data and check with database for authenticity
 
         if confirmed{
