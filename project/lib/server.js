@@ -57,12 +57,12 @@ app.route('/upload').post( function (req, res, next)
         //TODO: also check to see if its a image return status code of 400 (Bad Request)
         if(filename.length > 0)
         {
-         	fstream = fs.createWriteStream(__dirname + '/public/img/' + filename);
-            	
+            fstream = fs.createWriteStream(__dirname + '/public/img/' + filename);
+                
             file.pipe(fstream);
 
-        	fstream.on('close', function () 
-            {   	
+            fstream.on('close', function () 
+            {       
                 console.log("Upload Finished of " + filename);
             });
 
@@ -72,7 +72,7 @@ app.route('/upload').post( function (req, res, next)
             console.log("No file was uploaded!");
             console.log("upload a file...");
             res.redirect(300);
-	    }
+        }
         
     });
 
@@ -141,6 +141,68 @@ app.get('/getemail', function(req, res, next) {
         username = String(username);
         password = String(password);
         confirm_pass = String(confirm_pass);
+        
+        //========================================================================================================
+        //lets require/import the mongodb native drivers.
+        var mongodb = require('mongodb');
+
+        //We need to work with "MongoClient" interface in order to connect to a mongodb server.
+        var MongoClient = mongodb.MongoClient;
+
+        // Connection URL. This is where your mongodb server is running.
+        var url = 'mongodb://localhost:27017/topaz';
+
+        // Use connect method to connect to the Server
+        MongoClient.connect(url, function (err, db) 
+        {
+          if (err) 
+          {
+            console.log('Unable to connect to the mongoDB server. Error:', err);
+          } 
+          else 
+          {
+            //HURRAY!! We are connected. :)
+            console.log('Connection established to', url);
+
+            // Get the documents collection
+            var collection = db.collection('users');
+
+            collection.findOne({ uname : username}, function(err, doc) 
+            {
+                if( doc == null ) 
+                {
+                    var user = {uname: username, pass: password};
+                  
+
+                    // Insert some users
+                    collection.insert([user], function (err, result) {
+                      if (err) 
+                      {
+                        console.log(err);
+                      } 
+                      else 
+                      {
+                        console.log('Inserted %d documents into the "users" collection. The documents inserted with "_id" are:', result.length, result);
+                      }
+                      });
+                    
+                } 
+                else 
+                {
+                    console.log('User already exists');
+                    //res.redirect('/create-account.html')
+
+                }
+               // db.close();
+            });
+
+            //Create some users
+
+            
+          }
+        });
+
+        //========================================================================================================
 
         //These if statements were created for testing purposes. they should 
         //rather be used to check inputs existence in database
