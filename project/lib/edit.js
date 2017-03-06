@@ -1,4 +1,5 @@
-//Constructors 
+//Constructor
+//
 function Edit(edit)
 {
 	this.edit = edit;
