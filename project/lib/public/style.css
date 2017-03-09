@@ -1,10 +1,20 @@
 body {
 	background: #999999;
+    background-image: url(back.jpg);
+    background-repeat: no-repeat;
+    /*background-attachment: fixed;*/
+    background-size: 100% 100%;
+
 } 
+
+html {
+    height: 100%
+}
 
 .logo {
 	text-indent: : -999999px;
 	background: url('topaz_image.jpg');
+
 	width: 258px;
 	height:143px;
 }
@@ -14,6 +24,10 @@ body {
     text-decoration: underline;
     cursor: auto;
 }*/
+
+form {
+    border: 10px solid #f1f1f1;
+}
 
 /*media="(min-width: 510px)"*/
 /*app_index.g1.min.css:1*/
