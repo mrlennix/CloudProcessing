@@ -4,9 +4,9 @@ body {
     background-repeat: no-repeat;
     /*background-attachment: fixed;*/
     background-size: 100% 100%;
- 
+    background-position: center;
 
-} 
+}
 
 html {
     height: 100%
@@ -98,3 +98,40 @@ span.psw {
     float: left;
 }
 
+/*header shadow*/
+h1 {
+    text-shadow: 2px 2px;
+}
+
+
+/*background image animation*/
+html {
+
+    background-image:       
+        url('word.docx'),
+        url('rhino.jpg');
+    background-repeat: repeat-x;
+    background-position: 
+        0 20%,
+        0 95%,
+        0 0,
+        0 100%,
+        0 0;
+    background-size: 
+        2500px,
+        800px,
+        500px 200px,
+        1000px,
+        400px 260px;
+    animation: 100s para infinite linear;
+    }
+@keyframes para {
+    100% {
+        background-position: 
+            -5000px 20%,
+            -800px 95%,
+            500px 0,
+            1000px 100%,
+            400px 0;
+        }
+    }
