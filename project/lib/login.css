@@ -90,12 +90,15 @@ span.psw {
     height: 46px;
     bottom: 0;
     left: 0px;
+
     background-color: #000000;
-    /*background-color: rgba(0, 0, 0, 0.5)*/
+   
+    background-image: url(back.jpg);
+    background-repeat: repeat-x;
     text-align: center;
-    color: #eee;
-    z-index: 25;
-    float: left;
+    color: black;
+    /*z-index: 25;*/
+    /*float: left;*/
 }
 
 /*header shadow*/
@@ -109,8 +112,8 @@ html {
 
     background-image:       
         url('word.docx'),
-        url('rhino.jpg'),
-        url(8.jpg);
+        url('rhino.jpg');
+        /*url(8.jpg);*/
     background-repeat: repeat-x;
     background-position: 
         0 20%,
@@ -129,7 +132,7 @@ html {
 @keyframes para {
     100% {
         background-position: 
-            -5000px 20%,
+            -1000px 20%,
             -800px 95%,
             500px 0,
             1000px 100%,
