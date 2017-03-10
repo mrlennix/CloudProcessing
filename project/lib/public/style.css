@@ -57,7 +57,8 @@ html {
 
     background-image:       
         url('word.docx'),
-        url('rhino.jpg');
+        url('rhino.jpg'),
+        url(8.jpg);
     background-repeat: repeat-x;
     background-position: 
         0 20%,
