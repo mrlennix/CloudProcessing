@@ -1,5 +1,5 @@
 var JimpEdit = require('./jimp_edit');
-
+var NeuralStyle = require('./neural');
 //Factory Object 
 function EditFactory ()
 {
@@ -19,9 +19,15 @@ EditFactory.prototype.createEdit = function(type,data)
 	{
 
 	}
+	else if (type == 'NEURAL'){
+
+		edit = new NeuralStyle(data); 
+	}
 	else
 	{
-		type = undefined;
+		edit = new JimpEdit(data)
+		type = 'JIMP';
+
 	}
 
 

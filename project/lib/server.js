@@ -9,6 +9,9 @@ var mongoose    = require('mongoose');
 var passport    = require('passport');
 var Edit = require('./edit');
 var JimpEdit = require('./jimp_edit');
+var EditFactory = require('./EditFactory');
+//var timeout = express.timeout
+var timeout = require('connect-timeout');
 var app = express();
 app.use(busboy());
 app.use(express.static(path.join(__dirname, '/'))); //first page path of the client
@@ -69,25 +72,40 @@ app.route('/upload').post( function (req, res, next)
             console.log("upload a file...");
             res.redirect(300);
         }
+
     });
 
     //when busboy finishes run editing algorithm below
     req.busboy.on('finish',()=>{
 
-        console.log(decor.getValues());
+        //console.log(decor.getValues());
+
+        factory = new EditFactory();
+
+        edit = factory.createEdit(decor.getValues()['type'], decor)
+        if(edit.type == undefined)
+        {
+            res.statusCode = 400
+            res.send(400, "Something went wrong");
+            return
+        }
         // decor.getValues().background1 = "0x" + decor.getValues().background1.substr(1) + "FF";
 
         //iterate through decor and verify that style is valid; if so, add to edit list
         for(var key in decor.getValues() )
         {
-            if(key in JSTYLES) decor.addStyle( key ,JSTYLES[key] );
+            if(key in edit.STYLE) decor.addStyle( key ,edit.STYLE[key] );
         }
 
         //creates new editing object with the specific style
-        edit = new Edit( new JimpEdit(decor) );
+        //edit = new Edit( new JimpEdit(decor) );
+        
+        
         var done = edit.algorithm();
          done.then( (fname) =>{
-            res.redirect('image?fname=edited_'+fname);           //where to go next
+            console.log("-------------------------")
+            res.redirect('/image?fname=edited_'+fname);          //where to go next
+            
         });
     });
 });
@@ -215,8 +233,13 @@ app.get('/getemail', function(req, res, next) {
 });
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 //Listening for client
+
+app.use(timeout('1s'));
 var server = app.listen(668, function(req, res, next)
 {
     console.log('Listening on port %d', server.address().port);
 
 });
+
+
+

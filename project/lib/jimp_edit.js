@@ -3,6 +3,7 @@ Jimp = require('jimp');
 function JimpEdit(context)
 {
 	this.context = context;
+	this.STYLE = STYLE;
 }
 
 JimpEdit.prototype.algorithm = function()

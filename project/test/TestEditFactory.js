@@ -39,6 +39,16 @@ describe('EditFactory Test', function()
 		});
 	});
 
-
+	describe('NeuralStyle', function()
+	{
+		it('Undefined', function()
+		{
+			var decor = new Edit.Decorator();
+			var factory = new EditFactory();
+			var edit = factory.createEdit('NEURAL',decor);
+			console.log(edit);
+			expect('NEURAL').to.equals(edit.type);
+		});
+	});
 
 });
