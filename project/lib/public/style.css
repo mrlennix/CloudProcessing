@@ -1,6 +1,6 @@
 body {
 	background: #999999;
-    background-image: url('scene.jpeg');
+    background-image: url('./../scene.jpeg');
     background-repeat: no-repeat;
     /*background-attachment: fixed;*/
     background-size: 100% 100%;
