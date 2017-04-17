@@ -30,7 +30,7 @@ app.route('/upload').post( function (req, res, next)
     var decor = new Edit.Decorator(); //stores JSON data from client
     var Jimp;//used for jimp edit if uses decide to use jimp editor
     var JSTYLES = JimpEdit.STYLE;//Theses are the jimples styles that come from the jimp_edit module
-    var path = '../../img/edited/edited_'; //path to edited files being stored -- TODO: personal user
+    var path = '../../users/'+username+'/cache'; //path to edited files being stored -- TODO: personal user
 
     //pipe for stream
     req.pipe(req.busboy);
@@ -57,7 +57,7 @@ app.route('/upload').post( function (req, res, next)
         //TODO: also check to see if its a image return status code of 400 (Bad Request)
         if(filename.length > 0)
         {
-            fstream = fs.createWriteStream(__dirname + '/public/img/' + filename);
+            fstream = fs.createWriteStream(__dirname + '/public/users/'+username+'/album/' + filename);
             //TODO: change to specific user
             file.pipe(fstream);
 
@@ -80,7 +80,7 @@ app.route('/upload').post( function (req, res, next)
 
         //console.log(decor.getValues());
 
-        factory = new EditFactory();
+        factory = new EditFactory(username);
 
         edit = factory.createEdit(decor.getValues()['type'], decor)
         if(edit.type == undefined)
@@ -112,6 +112,24 @@ app.route('/upload').post( function (req, res, next)
 
 // GET method route
 // Get path to image on server to be sent to client
+
+app.get('/image', function (req, res)
+{
+    //path to edited folder
+    var des = 'public/users/'+username+'/cache';
+
+    //checks if image exists
+    if( fs.existsSync( path.join(__dirname, "/public/users/"+username+'/cache', req.query.fname ) ) == false)
+    {
+        res.status(400).send("File not found!  " +path.join(__dirname, "/public/users/"+username+'/cache', req.query.fname ));
+    }
+    else
+    {
+        res.sendFile( path.join(__dirname, des, req.query.fname) );
+    }
+});
+
+/*
 app.get('/image', function (req, res)
 {
     //path to edited folder
@@ -127,6 +145,7 @@ app.get('/image', function (req, res)
         res.sendFile( path.join(__dirname, des, req.query.fname) );
     }
 });
+*/
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 // user login and authentication. whould have the capability
@@ -137,6 +156,187 @@ app.get('/', function(req, res) {
 
 });
 
+
+app.get('/login', function(req, res, next) {
+        //made global temporarily
+        username = req.query.uname;
+        var password = req.query.psw;
+        username = String(username); //username, password, confirm_pass are sent as object but are cast to strings
+        password = String(password);
+
+        //========================================================================================================
+        //lets require/import the mongodb native drivers.
+        var mongodb = require('mongodb');
+
+        //We need to work with "MongoClient" interface in order to connect to a mongodb server.
+        var MongoClient = mongodb.MongoClient;
+
+        // Connection URL. This is where your mongodb server is running.
+        var url = 'mongodb://localhost:27017/topaz';
+
+        // Use connect method to connect to the Server
+        MongoClient.connect(url, function (err, db)
+        {
+          if (err)
+          {
+            console.log('Unable to connect to the mongoDB server. Error:', err);
+          }
+          else
+          {
+            //HURRAY!! We are connected. :)
+            console.log('Connection established to', url);
+
+            // Get the documents collection
+            var collection = db.collection('users');
+            
+            //To remove the users from db:
+            //collection.remove({});
+            
+            //querying for user
+            collection.findOne({ uname : username}, function(err, doc)
+            {
+                //if user does exist check pass.
+                if( doc != null )
+                {
+                    //var user = {uname: username, pass: password};
+                    console.log(doc.uname);
+                    console.log(doc.pass);
+                    console.log(password);
+                    //if password matches db it will send to the editing page
+                    if (password===String(doc.pass))
+                    {
+                        console.log('correct password');
+                        res.redirect('/public');
+                    }
+                    //if password does not match that from the db it will redirect to wrong pass page
+                    else {
+                        console.log('wrong password');
+                        res.redirect('/loginHTML(wrong-pass).html');
+                    }
+                    
+                }
+                //if user does not exist it will redirect to fail page
+                else
+                {
+                    console.log('User does not exist');
+                    res.redirect('/loginHTML(wrong-pass).html');
+                }
+            });
+          }
+        });
+
+});
+app.get('/create-account', function(req, res, next) {
+        var usernm = req.query.uname;
+        var password = req.query.psw;
+        var confirm_pass = req.query.confpsw;
+        usernm = String(usernm); //username, password, confirm_pass are sent as object but are cast to strings
+        password = String(password);
+        confirm_pass = String(confirm_pass);
+
+        if(confirm_pass!=password){
+            res.redirect('/create-account(pass-notmatch).html');
+        }
+        else{
+
+            //========================================================================================================
+            //lets require/import the mongodb native drivers.
+            var mongodb = require('mongodb');
+
+            //We need to work with "MongoClient" interface in order to connect to a mongodb server.
+            var MongoClient = mongodb.MongoClient;
+
+            // Connection URL. This is where your mongodb server is running.
+            var url = 'mongodb://localhost:27017/topaz';
+
+            // Use connect method to connect to the Server
+            MongoClient.connect(url, function (err, db)
+            {
+              if (err)
+              {
+                console.log('Unable to connect to the mongoDB server. Error:', err);
+              }
+              else
+              {
+                //HURRAY!! We are connected. :)
+                console.log('Connection established to', url);
+
+                // Get the documents collection
+                var collection = db.collection('users');
+
+                //querying for existing user
+                collection.findOne({ uname : usernm}, function(err, doc)
+                {
+                    //if user does not exist, insert into database
+                    if( doc == null )
+                    {
+                        var user = {uname: usernm, pass: password};
+                        // Insert some users
+                        collection.insert([user], function (err, result) {
+                          if (err)
+                          {
+                            console.log(err);
+                          }
+                          else
+                          {
+                            console.log('Inserted %d documents into the "users" collection. The documents inserted with "_id" are:', result.length, result);
+                          }
+                          });
+                        var dir='./public/users/'+usernm;
+                        var cachedir='./public/users/'+usernm+'/cache';
+                        var albumdir='./public/users/'+usernm+'/album';
+                        fs.mkdirSync(dir);
+
+                        fs.mkdirSync(cachedir);
+                        //console.log()
+                        fs.mkdirSync(albumdir);
+                        res.redirect('/loginHTML.html')
+                    }
+                    //if user does exist, prints to console -- TODO:  create new html page
+                    else
+                    {
+                        console.log('User already exists');
+                        res.redirect('/create-account(failed-attempt).html')
+                    }
+                });
+                //Create some users
+              }
+            });
+        }
+
+        //========================================================================================================
+
+        //These if statements were created for testing purposes. they should
+        //rather be used to check inputs existence in database
+        /*
+         if ( String(confirm_pass) === "undefined") {
+             //res.send(username);
+             console.log("user name: " + username);
+             console.log('Password:  ' + password);
+             res.redirect('/public');
+         }
+         else if ((confirm_pass != "undefined")) {
+             //res.send(username);
+             console.log("user name: " + username);
+             console.log('Password:  ' + password);
+             console.log('Conf-Password:  ' + confirm_pass);
+             res.redirect('/');
+         }
+         else {
+            console.log("Input is empty >>>>>>>");
+             res.redirect(300);
+         }
+         */
+
+        /*get user data and check with database for authenticity
+        //TODO:
+        if confirmed{
+              redirect to "public/index.html" page
+        }
+        else {
+                redirect to "login" page
+        }*/
+/*
 app.get('/getemail', function(req, res, next) {
         var username = req.query.uname;
         var password = req.query.psw;
@@ -221,7 +421,7 @@ app.get('/getemail', function(req, res, next) {
             console.log("Input is empty >>>>>>>");
              res.redirect(300);
          }
-
+        */
         /*get user data and check with database for authenticity
         //TODO:
         if confirmed{

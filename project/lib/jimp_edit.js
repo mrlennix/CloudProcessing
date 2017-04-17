@@ -1,9 +1,10 @@
 Jimp = require('jimp');
 
-function JimpEdit(context)
+function JimpEdit(context, username)
 {
 	this.context = context;
 	this.STYLE = STYLE;
+	this.username = username;
 }
 
 JimpEdit.prototype.algorithm = function()
@@ -15,14 +16,14 @@ JimpEdit.prototype.algorithm = function()
 	//returns promise so others know when to execute
 	return new Promise ( (res,rej) => {
 		//reads image and performs edits
-		Jimp.read('./public/img/'+value['fname']).then( function(image)
+		Jimp.read('./public/users/'+username+'/album/'+value['fname']).then( function(image)
 		{
 			for (let key in style)
 			{
 				style[key](image,value[key]);
 
 			}
-			image.write("./public/img/edited/edited_"+value['fname']);
+			image.write("./public/users/"+username+'/cache/edited_'+value['fname']);
 
 			res(value['fname']);
 

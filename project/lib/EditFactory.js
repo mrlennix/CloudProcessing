@@ -1,9 +1,9 @@
 var JimpEdit = require('./jimp_edit');
 var NeuralStyle = require('./neural');
 //Factory Object 
-function EditFactory ()
+function EditFactory (username)
 {
-
+	this.username = username;
 }
 
 //Method responsible for creating the requested edit
@@ -13,7 +13,7 @@ EditFactory.prototype.createEdit = function(type,data)
 
 	if(type == 'JIMP')
 	{
-		edit = new JimpEdit(data)
+		edit = new JimpEdit(data, username)
 	}
 	else if (type == 'OPENCV')
 	{
