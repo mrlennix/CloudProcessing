@@ -105,6 +105,7 @@ app.route('/upload').post( function (req, res, next)
          done.then( (fname) =>{
             console.log("-------------------------")
             res.redirect('/image?fname=edited_'+fname);          //where to go next
+            //res.redirect('/username?fname=edited_'+fname);
             
         });
     });
@@ -126,26 +127,44 @@ app.get('/image', function (req, res)
     else
     {
         res.sendFile( path.join(__dirname, des, req.query.fname) );
+       
+        
     }
+
+
 });
 
-/*
-app.get('/image', function (req, res)
+
+
+
+app.get('/all', function (req, res)
 {
-    //path to edited folder
-    var des = 'public/img/edited';
+    console.log("got here")
+        
+        var obj = {};
+        var fileType = '.jpg',
+        files = [], i;
 
-    //checks if image exists
-    if( fs.existsSync( path.join(__dirname, "/public/img/edited", req.query.fname ) ) == false)
-    {
-        res.status(400).send("File not found!  " +path.join(__dirname, "/public/img/edited", req.query.fname ));
-    }
-    else
-    {
-        res.sendFile( path.join(__dirname, des, req.query.fname) );
-    }
+        console.log("got here")
+        fs.readdir(path.join(__dirname, "/public/users/"+username+'/cache'), function (err, list) {
+            for(i=0; i<list.length; i++) 
+            {
+                if(path.extname(list[i]) === fileType) 
+                {
+                    files.push(list[i]); //store the file name into the array files
+                    obj[i] = list[i];
+
+                }
+           
+            }
+       
+            res.send(obj);
+            // res.render(__dirname + "/public/usr_image.html", {F:obj});
+          
+        });
+        console.log('Some messages')
 });
-*/
+
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 // user login and authentication. whould have the capability

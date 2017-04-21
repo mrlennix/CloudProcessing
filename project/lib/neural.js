@@ -34,7 +34,7 @@ NeuralStyle.prototype.algorithm = function()
 
 			asyncblock(function (flow) {
     		exec(command, flow.add());
-    		result = flow.wait();
+    		var result = flow.wait();
     		console.log(result);    // There'll be trailing \n in the output
     		res(value['output']);
     // Some other jobs
