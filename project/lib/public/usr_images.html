@@ -26,7 +26,7 @@
           
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
         </center>
-        <script>
+        <script type="text/javascript">
             // var obj = document.createElement("obj");
                 function add_google_logo() {
 
@@ -47,16 +47,19 @@
         };
 
         getJSON('http://localhost:668/all',
-        function(err, data) {
-          if (err != null) {
+        function(err, data) 
+        {
+          if (err != null) 
+          {
             alert('Something went wrong: ' + err);
-          } else {
+          } 
+          else 
+          {
             for (key in data)
             {
                 var src = "http://localhost:668/image?fname=" + data[key];
-                show_image(src, 276,200, "Google Logo", data[key], 'href ='+src);   
+                show_image(src, 276,200, "Google Logo", data[key], 'href ='+src);
             }
-
           }
         });
 //-------------------------------------------------------------------------
@@ -65,26 +68,58 @@
 
 
     function show_image(src, width, height, alt,filename, href) {
-        // document.write('<a href = "' + src +'" download');
+
         var img = document.createElement("img");
+        var div = document.createElement("div");
         img.src = src;
         img.width = width;
         img.height = height;
         img.alt = alt; 
         img.href = src;
         img.download = src;
-        
-
+        div.style = "display:inline-block; align : center; border-style: solid; position:relative; text-align : center; width: 300px; height: 200px; border: 1px solid blue; box-sizing: border-box;"
+        // create an element called a and append "a" into it
         var a = document.createElement('a');
         var link_image = img;
+        //add image url to the a element
         a.appendChild(link_image);
         a.download = document.body.appendChild(a);
         a.href = src;
-        document.body.appendChild(a);
+        // document.body.appendChild(a);
+
+        var btn = document.createElement("BUTTON");        // Create a <button> element
+        div.appendChild(btn)
+        div.appendChild(a)
+
+        var t = document.createTextNode("Click to edit");       // Create a text node
+        btn.style = "width: 100%; vertical-align: top;"
+
+
+        var element= document.getElementsByClassName(btn);
+        btn.addEventListener(
+            "click", function()
+            {
+               
+                // strips url from image path
+                var sendImage = src.split("=");
+                // strips 'edited_' from image
+                sendImage = sendImage[1].split("edited_");
+                var imageName = sendImage
+                // alert(sendImage[1]);
+
+                localStorage.setItem("myImage",sendImage[1]);
+                location.href = "./re-edit.html";
+            }, false); 
+        img.style = "height: 100%; width: 100%;  "
+        btn.appendChild(t);                                // Append the text to <button>
+
+
+        document.body.appendChild(div);                    // Append <button> to <body>
 
 
 
     }
+
 
         
 

@@ -31,7 +31,7 @@ app.route('/upload').post( function (req, res, next)
     var Jimp;//used for jimp edit if uses decide to use jimp editor
     var JSTYLES = JimpEdit.STYLE;//Theses are the jimples styles that come from the jimp_edit module
     var path = '../../users/'+username+'/cache'; //path to edited files being stored -- TODO: personal user
-
+    console.log("username = " + username);
     //pipe for stream
     req.pipe(req.busboy);
 
@@ -48,9 +48,40 @@ app.route('/upload').post( function (req, res, next)
         else decor.addValues(n,v);
     });
 
+
+
     //on files store them into the users image folder
     req.busboy.on('file', function (fieldname, file, filename)
     {
+
+        decor.addValues(fieldname,filename);
+        console.log("Uploading: " + filename);
+        //Path where image will be uploaded
+        //TODO: also check to see if its a image return status code of 400 (Bad Request)
+        if(filename.length > 0)
+        {
+            fstream = fs.createWriteStream(__dirname + '/public/users/'+username+'/album/' + filename);
+            //TODO: change to specific user
+            file.pipe(fstream);
+
+            fstream.on('close', function ()
+            {
+                console.log("Upload Finished of " + filename);
+            });
+        }
+        else
+        {
+            console.log("No file was uploaded!");
+            console.log("upload a file...");
+            res.redirect(300);
+        }
+
+    });
+
+
+    req.busboy.on('text', function (fieldname, file, filename)
+    {
+
         decor.addValues(fieldname,filename);
         console.log("Uploading: " + filename);
         //Path where image will be uploaded
