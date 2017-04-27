@@ -88,7 +88,7 @@ app.route('/upload').post( function (req, res, next)
         //TODO: also check to see if its a image return status code of 400 (Bad Request)
         if(filename.length > 0)
         {
-            fstream = fs.createWriteStream(__dirname + '/public/users/'+username+'/album/' + filename);
+            fstream = fs.createWriteStream(__dirname + '/public/users/'+username+'/cache/' + filename);
             //TODO: change to specific user
             file.pipe(fstream);
 
@@ -112,7 +112,14 @@ app.route('/upload').post( function (req, res, next)
         //console.log(decor.getValues());
 
         factory = new EditFactory(username);
-
+        if(decor.getValues()['fname'].includes('edited_')){
+             decor.addValues('path','./public/users/'+username+'/cache/'+ decor.getValues()['fname']);
+             decor.addValues('save',"./public/users/"+username+'/cache/'+decor.getValues()['fname']);
+            }
+        else{
+             decor.addValues('path','./public/users/'+username+'/album/'+decor.getValues()['fname']);
+             decor.addValues('save',"./public/users/"+username+'/cache/edited_'+decor.getValues()['fname']);
+            }
         edit = factory.createEdit(decor.getValues()['type'], decor)
         if(edit.type == undefined)
         {
@@ -135,7 +142,15 @@ app.route('/upload').post( function (req, res, next)
         var done = edit.algorithm();
          done.then( (fname) =>{
             console.log("-------------------------")
-            res.redirect('/image?fname=edited_'+fname);          //where to go next
+            // if(decor.getValues()['fname'].includes('edited_')){
+            //      res.redirect('/image?fname='+fname);
+            //  }
+            // else{
+            //      res.redirect('/image?fname=edited_'+fname); 
+            //  }
+             res.redirect('/public/usr_images.html');
+
+                     //where to go next
             //res.redirect('/username?fname=edited_'+fname);
             
         });

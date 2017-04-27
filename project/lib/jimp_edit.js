@@ -16,14 +16,14 @@ JimpEdit.prototype.algorithm = function()
 	//returns promise so others know when to execute
 	return new Promise ( (res,rej) => {
 		//reads image and performs edits
-		Jimp.read('./public/users/'+username+'/album/'+value['fname']).then( function(image)
+		Jimp.read(value['path']).then( function(image)
 		{
 			for (let key in style)
 			{
 				style[key](image,value[key]);
 
 			}
-			image.write("./public/users/"+username+'/cache/edited_'+value['fname']);
+			image.write(value['save']);
 
 			res(value['fname']);
 
