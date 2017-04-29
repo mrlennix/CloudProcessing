@@ -111,7 +111,7 @@ app.route('/upload').post( function (req, res, next)
     //when busboy finishes run editing algorithm below
     req.busboy.on('finish',()=>{
 
-        console.log(decor.getValues());
+        //console.log(decor.getValues());
 
         factory = new EditFactory(username);
         if(decor.getValues()['fname'].includes('edited_')){

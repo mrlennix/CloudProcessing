@@ -25,7 +25,7 @@ JimpEdit.prototype.algorithm = function()
 			}
 			image.write(value['save']);
 
-			res(value['fname']);
+			res(value['content']);
 
 		}).catch( (err) => { console.log(err);rej(undefined); } );
 	});
