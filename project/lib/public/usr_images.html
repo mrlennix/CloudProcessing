@@ -13,17 +13,12 @@
 <!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
         
         <div>
-            <h2>Click on image to save </h2>
+            <h2>Click image to download</h2>
+            <button><a href="./re-edit.html" style="text-decoration:none">Go back</a></button>
             <body onload="add_google_logo();"></body>
         </div>
 
 
-        <b><a href="https://github.com/mrlennix/CloudProcessing" target="_blank" class="footer">Contact Us</a></b>
-
-
-
-
-          
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
         </center>
         <script type="text/javascript">
@@ -46,7 +41,7 @@
                         xhr.send();
         };
 
-        getJSON('http://localhost:668/all',
+        getJSON('../all',
         function(err, data) 
         {
           if (err != null) 
@@ -57,7 +52,7 @@
           {
             for (key in data)
             {
-                var src = "http://localhost:668/image?fname=" + data[key];
+                var src = "/image?fname=" + data[key];
                 show_image(src, 276,200, "Reload Image", data[key], 'href ='+src);
             }
           }

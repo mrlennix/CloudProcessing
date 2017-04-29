@@ -13,6 +13,8 @@
 <!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
 
             <form method='post' action='../upload' enctype="multipart/form-data">
+            
+            <!-- <font color="red">This is some text!</font> -->
             <h1><label><b>Edit Image</b></label></h1>
             <form autocomplete="off"    method='post' action='../upload' enctype="multipart/form-data">
 
@@ -26,26 +28,18 @@
                 <label id="blurlabel" style="display: none;"><b>Blur Percentage:</b></label>
                 <input type="number"  id="blurinput"  min="1" max="100" style="display: none;" onchange="blurvaluechange(this)"></br>
 
-
-
-                <!-- <input type='file' name='fname' accept='image/*'></br> -->
-
-                <div>
-                      <body onload ="newImage();"></body>
-                       <input type="text" name='fname' id = 's1' value = "" accept='image/*'></br>
-
-                       </body>
-                </div>
+                <input type='file' name='fname' accept='image/*'></br>
 
                 <!--Select color: <input type = 'color'></br>
                 Crop size: <input type="number" name="points" min="20" max="200"></br>-->
+
                 <input type='Submit'></br>
                 
-                <button><a href="./usr_images.html" style="text-decoration:none" >Click here to view Folder</a></button>
+                <button><a href="./usr_images.html" style="text-decoration:none">Click here to view Folder</a></button></br>
+                <label><font color = 'red'> Please select a file!</label></br>
                 
-                
-                <!-- <b><a href="https://github.com/mrlennix/CloudProcessing" target="_blank" class="footer" position = "absolute">Contact Us</a></b> -->
-
+                <!-- <b><a href="https://github.com/mrlennix/CloudProcessing" target="_blank" class="footer">Contact Us</a></b>
+ -->
 
             </form>
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
@@ -77,18 +71,7 @@
                     document.getElementById("gaussianinput").style.display="none";
                 }
             }
-            var ImagePath;
-            function newImage()
-            {
-              ImagePath = localStorage.getItem("myImage");
-              // alert(ImagePath);
-              x = "some text";
-             somealert = document.getElementById("s1").value = ImagePath;
-              // return ImagePath;
-              // alert(somealert);
-
-
-            }
+        
         </script>
     </body>
 </html>

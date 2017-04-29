@@ -73,7 +73,8 @@ app.route('/upload').post( function (req, res, next)
         {
             console.log("No file was uploaded!");
             console.log("upload a file...");
-            res.redirect(300);
+            // res.redirect(300);
+            res.redirect('public/select_image.html');
         }
 
     });
@@ -101,7 +102,8 @@ app.route('/upload').post( function (req, res, next)
         {
             console.log("No file was uploaded!");
             console.log("upload a file...");
-            res.redirect(300);
+            // res.redirect(300);
+            res.redirect("public/select_image.html");
         }
 
     });
@@ -109,7 +111,7 @@ app.route('/upload').post( function (req, res, next)
     //when busboy finishes run editing algorithm below
     req.busboy.on('finish',()=>{
 
-        //console.log(decor.getValues());
+        console.log(decor.getValues());
 
         factory = new EditFactory(username);
         if(decor.getValues()['fname'].includes('edited_')){
@@ -369,132 +371,7 @@ app.get('/create-account', function(req, res, next) {
             });
         }
 
-        //========================================================================================================
-
-        //These if statements were created for testing purposes. they should
-        //rather be used to check inputs existence in database
-        /*
-         if ( String(confirm_pass) === "undefined") {
-             //res.send(username);
-             console.log("user name: " + username);
-             console.log('Password:  ' + password);
-             res.redirect('/public');
-         }
-         else if ((confirm_pass != "undefined")) {
-             //res.send(username);
-             console.log("user name: " + username);
-             console.log('Password:  ' + password);
-             console.log('Conf-Password:  ' + confirm_pass);
-             res.redirect('/');
-         }
-         else {
-            console.log("Input is empty >>>>>>>");
-             res.redirect(300);
-         }
-         */
-
-        /*get user data and check with database for authenticity
-        //TODO:
-        if confirmed{
-              redirect to "public/index.html" page
-        }
-        else {
-                redirect to "login" page
-        }*/
-/*
-app.get('/getemail', function(req, res, next) {
-        var username = req.query.uname;
-        var password = req.query.psw;
-        var confirm_pass = req.query.confpsw;
-        username = String(username); //username, password, confirm_pass are sent as object but are cast to strings
-        password = String(password);
-        confirm_pass = String(confirm_pass);
-
-        //========================================================================================================
-        //lets require/import the mongodb native drivers.
-        var mongodb = require('mongodb');
-
-        //We need to work with "MongoClient" interface in order to connect to a mongodb server.
-        var MongoClient = mongodb.MongoClient;
-
-        // Connection URL. This is where your mongodb server is running.
-        var url = 'mongodb://localhost:27017/topaz';
-
-        // Use connect method to connect to the Server
-        MongoClient.connect(url, function (err, db)
-        {
-          if (err)
-          {
-            console.log('Unable to connect to the mongoDB server. Error:', err);
-          }
-          else
-          {
-            //HURRAY!! We are connected. :)
-            console.log('Connection established to', url);
-
-            // Get the documents collection
-            var collection = db.collection('users');
-
-            //querying for existing user
-            collection.findOne({ uname : username}, function(err, doc)
-            {
-                //if user does not exist, insert into database
-                if( doc == null )
-                {
-                    var user = {uname: username, pass: password};
-                    // Insert some users
-                    collection.insert([user], function (err, result) {
-                      if (err)
-                      {
-                        console.log(err);
-                      }
-                      else
-                      {
-                        console.log('Inserted %d documents into the "users" collection. The documents inserted with "_id" are:', result.length, result);
-                      }
-                      });
-                }
-                //if user does exist, prints to console -- TODO:  create new html page
-                else
-                {
-                    console.log('User already exists');
-                    //res.redirect('/create-account.html')
-                }
-            });
-            //Create some users
-          }
-        });
-
-        //========================================================================================================
-
-        //These if statements were created for testing purposes. they should
-        //rather be used to check inputs existence in database
-         if ( String(confirm_pass) === "undefined") {
-             //res.send(username);
-             console.log("user name: " + username);
-             console.log('Password:  ' + password);
-             res.redirect('/public');
-         }
-         else if ((confirm_pass != "undefined")) {
-             //res.send(username);
-             console.log("user name: " + username);
-             console.log('Password:  ' + password);
-             console.log('Conf-Password:  ' + confirm_pass);
-             res.redirect('/');
-         }
-         else {
-            console.log("Input is empty >>>>>>>");
-             res.redirect(300);
-         }
-        */
-        /*get user data and check with database for authenticity
-        //TODO:
-        if confirmed{
-              redirect to "public/index.html" page
-        }
-        else {
-                redirect to "login" page
-        }*/
+  
 });
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 //Listening for client
