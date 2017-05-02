@@ -13,7 +13,8 @@ EditFactory.prototype.createEdit = function(type,data)
 
 	if(type == 'JIMP')
 	{
-		edit = new JimpEdit(data, username)
+		
+		edit = new JimpEdit(data, this.username)
 	}
 	else if (type == 'OPENCV')
 	{

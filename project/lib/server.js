@@ -30,8 +30,16 @@ app.route('/upload').post( function (req, res, next)
     var decor = new Edit.Decorator(); //stores JSON data from client
     var Jimp;//used for jimp edit if uses decide to use jimp editor
     var JSTYLES = JimpEdit.STYLE;//Theses are the jimples styles that come from the jimp_edit module
+    
+    // var username = req.cookie['username']
+    // console.log(req.headers['cookie'])
+    var username = req.headers['cookie']
+    username = username.split('=')
+    username = username[1]
+    // console.log("Now this =========", username)
     var path = '../../users/'+username+'/cache'; //path to edited files being stored -- TODO: personal user
-    console.log("username = " + username);
+    // console.log("username = " + username);
+
     //pipe for stream
     req.pipe(req.busboy);
 
@@ -55,7 +63,7 @@ app.route('/upload').post( function (req, res, next)
     {
 
         decor.addValues(fieldname,filename);
-        console.log("Uploading: " + filename);
+        // console.log("Uploading: " + filename);
         //Path where image will be uploaded
         //TODO: also check to see if its a image return status code of 400 (Bad Request)
         if(filename.length > 0)
@@ -66,13 +74,13 @@ app.route('/upload').post( function (req, res, next)
 
             fstream.on('close', function ()
             {
-                console.log("Upload Finished of " + filename);
+                // console.log("Upload Finished of " + filename);
             });
         }
         else
         {
-            console.log("No file was uploaded!");
-            console.log("upload a file...");
+            // console.log("No file was uploaded!");
+            // console.log("upload a file...");
             // res.redirect(300);
             res.redirect('public/select_image.html');
         }
@@ -95,14 +103,14 @@ app.route('/upload').post( function (req, res, next)
 
             fstream.on('close', function ()
             {
-                console.log("Upload Finished of " + filename);
+                // console.log("Upload Finished of " + filename);
             });
         }
         else
         {
-            console.log("No file was uploaded!");
-            console.log("upload a file...");
-            // res.redirect(300);
+            // console.log("No file was uploaded!");
+            // console.log("upload a file...");
+            // // res.redirect(300);
             res.redirect("public/select_image.html");
         }
 
@@ -143,7 +151,7 @@ app.route('/upload').post( function (req, res, next)
         
         var done = edit.algorithm();
          done.then( (fname) =>{
-            console.log("-------------------------")
+            // console.log("-------------------------")
             // if(decor.getValues()['fname'].includes('edited_')){
             //      res.redirect('/image?fname='+fname);
             //  }
@@ -164,6 +172,9 @@ app.route('/upload').post( function (req, res, next)
 
 app.get('/image', function (req, res)
 {
+    var username = req.headers['cookie']
+    username = username.split('=')
+    username = username[1]
     //path to edited folder
     var des = 'public/users/'+username+'/cache';
 
@@ -187,13 +198,14 @@ app.get('/image', function (req, res)
 
 app.get('/all', function (req, res)
 {
-    console.log("got here")
-        
+    
+         var username = req.headers['cookie']
+         username = username.split('=')
+         username = username[1]
         var obj = {};
         var fileType = '.jpg',
         files = [], i;
 
-        console.log("got here")
         fs.readdir(path.join(__dirname, "/public/users/"+username+'/cache'), function (err, list) {
             for(i=0; i<list.length; i++) 
             {
@@ -210,7 +222,7 @@ app.get('/all', function (req, res)
             // res.render(__dirname + "/public/usr_image.html", {F:obj});
           
         });
-        console.log('Some messages')
+        
 });
 
 
@@ -226,7 +238,7 @@ app.get('/', function(req, res) {
 
 app.get('/login', function(req, res, next) {
         //made global temporarily
-        username = req.query.uname;
+        var username = req.query.uname;
         var password = req.query.psw;
         username = String(username); //username, password, confirm_pass are sent as object but are cast to strings
         password = String(password);
@@ -246,12 +258,12 @@ app.get('/login', function(req, res, next) {
         {
           if (err)
           {
-            console.log('Unable to connect to the mongoDB server. Error:', err);
+            // console.log('Unable to connect to the mongoDB server. Error:', err);
           }
           else
           {
             //HURRAY!! We are connected. :)
-            console.log('Connection established to', url);
+            // console.log('Connection established to', url);
 
             // Get the documents collection
             var collection = db.collection('users');
@@ -266,18 +278,20 @@ app.get('/login', function(req, res, next) {
                 if( doc != null )
                 {
                     //var user = {uname: username, pass: password};
-                    console.log(doc.uname);
-                    console.log(doc.pass);
-                    console.log(password);
+                    // console.log(doc.uname);
+                    // console.log(doc.pass);
+                    // console.log(password);
                     //if password matches db it will send to the editing page
                     if (password===String(doc.pass))
                     {
-                        console.log('correct password');
+                        // console.log('correct password');
+                        res.cookie('username', doc.uname)
+
                         res.redirect('/public');
                     }
                     //if password does not match that from the db it will redirect to wrong pass page
                     else {
-                        console.log('wrong password');
+                        // console.log('wrong password');
                         res.redirect('/loginHTML(wrong-pass).html');
                     }
                     
@@ -285,7 +299,7 @@ app.get('/login', function(req, res, next) {
                 //if user does not exist it will redirect to fail page
                 else
                 {
-                    console.log('User does not exist');
+                    // console.log('User does not exist');
                     res.redirect('/loginHTML(wrong-pass).html');
                 }
             });
@@ -293,6 +307,13 @@ app.get('/login', function(req, res, next) {
         });
 
 });
+
+
+
+
+
+
+
 app.get('/create-account', function(req, res, next) {
         var usernm = req.query.uname;
         var password = req.query.psw;
@@ -321,12 +342,12 @@ app.get('/create-account', function(req, res, next) {
             {
               if (err)
               {
-                console.log('Unable to connect to the mongoDB server. Error:', err);
+                // console.log('Unable to connect to the mongoDB server. Error:', err);
               }
               else
               {
                 //HURRAY!! We are connected. :)
-                console.log('Connection established to', url);
+                // console.log('Connection established to', url);
 
                 // Get the documents collection
                 var collection = db.collection('users');
@@ -346,7 +367,7 @@ app.get('/create-account', function(req, res, next) {
                           }
                           else
                           {
-                            console.log('Inserted %d documents into the "users" collection. The documents inserted with "_id" are:', result.length, result);
+                            // console.log('Inserted %d documents into the "users" collection. The documents inserted with "_id" are:', result.length, result);
                           }
                           });
                         var dir='./public/users/'+usernm;
@@ -362,7 +383,7 @@ app.get('/create-account', function(req, res, next) {
                     //if user does exist, prints to console -- TODO:  create new html page
                     else
                     {
-                        console.log('User already exists');
+                        // console.log('User already exists');
                         res.redirect('/create-account(failed-attempt).html')
                     }
                 });
@@ -379,7 +400,7 @@ app.get('/create-account', function(req, res, next) {
 app.use(timeout('1s'));
 var server = app.listen(668, function(req, res, next)
 {
-    console.log('Listening on port %d', server.address().port);
+   console.log('Listening on port %d', server.address().port);
 
 });
 
