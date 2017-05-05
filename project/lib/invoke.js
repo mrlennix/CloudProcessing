@@ -4,6 +4,8 @@ var plat = process.platform;
 var child = "";
 var captured_decor = ""
 var sourceFile = require('./server.js');
+
+var
 console.log(sourceFile.variableName);
 
 var newlist = sourceFile.templist;

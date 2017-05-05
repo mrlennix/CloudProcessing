@@ -1,5 +1,6 @@
 var JimpEdit = require('./jimp_edit');
 var NeuralStyle = require('./neural');
+var OPENCV = require('./opencv')
 //Factory Object 
 function EditFactory (username)
 {
@@ -18,7 +19,7 @@ EditFactory.prototype.createEdit = function(type,data)
 	}
 	else if (type == 'OPENCV')
 	{
-
+		edit = new OPENCV(data);
 	}
 	else if (type == 'NEURAL'){
 
