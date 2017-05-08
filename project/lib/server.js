@@ -32,14 +32,14 @@ app.route('/upload').post( function (req, res, next)
     var JSTYLES = JimpEdit.STYLE;//Theses are the jimples styles that come from the jimp_edit module
     
     // var username = req.cookie['username']
-    // console.log(req.headers['cookie'])
+    console.log(req.headers['cookie'])
     var username = req.headers['cookie']
     username = username.split('=')
     username = username[1]
     // console.log("Now this =========", username)
     var path = '../../users/'+username+'/cache'; //path to edited files being stored -- TODO: personal user
     // console.log("username = " + username);
-
+    decor.addValues('username',username);
     //pipe for stream
     req.pipe(req.busboy);
 
@@ -122,14 +122,14 @@ app.route('/upload').post( function (req, res, next)
         //console.log(decor.getValues());
 
         factory = new EditFactory(username);
-        if(decor.getValues()['fname'].includes('edited_')){
-             decor.addValues('path','./public/users/'+username+'/cache/'+ decor.getValues()['fname']);
-             decor.addValues('save',"./public/users/"+username+'/cache/'+decor.getValues()['fname']);
-            }
-        else{
-             decor.addValues('path','./public/users/'+username+'/album/'+decor.getValues()['fname']);
-             decor.addValues('save',"./public/users/"+username+'/cache/edited_'+decor.getValues()['fname']);
-            }
+        // if(decor.getValues()['fname'].includes('edited_')){
+        //      decor.addValues('path','./public/users/'+username+'/cache/'+ decor.getValues()['fname']);
+        //      decor.addValues('save',"./public/users/"+username+'/cache/'+decor.getValues()['fname']);
+        //     }
+        // else{
+        //      decor.addValues('path','./public/users/'+username+'/album/'+decor.getValues()['fname']);
+        //      decor.addValues('save',"./public/users/"+username+'/cache/edited_'+decor.getValues()['fname']);
+        //     }
         edit = factory.createEdit(decor.getValues()['type'], decor)
         if(edit.type == undefined)
         {
@@ -209,12 +209,11 @@ app.get('/all', function (req, res)
         fs.readdir(path.join(__dirname, "/public/users/"+username+'/cache'), function (err, list) {
             for(i=0; i<list.length; i++) 
             {
-                if(path.extname(list[i]) === fileType) 
-                {
+                
                     files.push(list[i]); //store the file name into the array files
                     obj[i] = list[i];
 
-                }
+                
            
             }
        
@@ -398,7 +397,7 @@ app.get('/create-account', function(req, res, next) {
 //Listening for client
 
 app.use(timeout('1s'));
-var server = app.listen(668, function(req, res, next)
+var server = app.listen(669, function(req, res, next)
 {
    console.log('Listening on port %d', server.address().port);
 

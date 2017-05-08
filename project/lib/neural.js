@@ -16,18 +16,21 @@ NeuralStyle.prototype.algorithm = function()
 	console.log("Got here");
 	console.log(style);
 	console.log(value);
-
+	value['output']=value['content']
 	//returns promise so others know when to execute
 	return new Promise ( (res,rej) => {
 		var command = 'python ../neural-style/neural_style.py ';
 		for (let key in style)
 			{
 				//style[key](this.command,value[key]);
-				command = style[key](command,value[key]);
+				// console.log(command)
+				command = style[key](command,value);
+				
 				// console.log( style[key](command,value[key]));
 				
 
 			}
+
 			console.log(command)
 			var asyncblock = require('asyncblock');
 			var exec = require('child_process').exec;
@@ -48,10 +51,10 @@ NeuralStyle.prototype.algorithm = function()
 //Jimp functions for styles
 var STYLE =
 {
-	content: (image,v)=>{image += '--content '+__dirname+'/public/img/'+v + ' '; return image},
-	styles: (image,v)=>{image += '--styles '+__dirname+'/public/img/' + v + ' '; return image},
-	output: (image,v)=>{image += '--output '+__dirname+'/public/img/edited/edited_' + v + ' '; return image},
-	iterations: (image,v)=>{image += '--iterations ' + v + ' '; return image} 
+	content: (image,v)=>{image += '--content '+'./public/users/'+v['username']+'/album/'+ v['content']+' '; return image},
+	styles: (image,v)=>{image += '--styles '+ './public/users/'+v['username']+'/album/'+ v['styles']+' '; return image},
+	output: (image,v)=>{image += '--output '+ './public/users/'+v['username']+'/cache/'+ v['content']+' ' ; return image},
+	iterations: (image,v)=>{image += '--iterations ' + v['iterations'] + ' '; return image} 
 
 }
 

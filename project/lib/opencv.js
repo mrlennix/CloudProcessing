@@ -7,7 +7,18 @@ var sourceFile = require('./server.js');
 
 function opencv(context)
 {
-	this.context = context;
+	
+	 if(context.getValues()['fname'].includes('edited_'))
+	 {
+             context.addValues('path','./public/users/'+context.getValues()['username']+'/cache/'+ context.getValues()['fname']);
+             context.addValues('save',"./public/users/"+context.getValues()['username']+'/cache/'+context.getValues()['fname']);
+            }
+        else{
+             context.addValues('path','./public/users/'+context.getValues()['username']+'/album/'+context.getValues()['fname']);
+             context.addValues('save',"./public/users/"+context.getValues()['username']+'/cache/edited_'+context.getValues()['fname']);
+            }
+
+    this.context = context;
 	this.STYLE = STYLE;
 }
 
