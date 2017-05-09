@@ -17,6 +17,7 @@ NeuralStyle.prototype.algorithm = function()
 	console.log(style);
 	console.log(value);
 	value['output']=value['content']
+	console.log(value['output'])
 	//returns promise so others know when to execute
 	return new Promise ( (res,rej) => {
 		var command = 'python ../neural-style/neural_style.py ';

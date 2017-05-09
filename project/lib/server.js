@@ -112,7 +112,7 @@ app.route('/upload').post( function (req, res, next)
             // console.log("upload a file...");
             // // res.redirect(300);
             res.redirect("public/select_image.html");
-        }
+        }s
 
     });
 
@@ -397,7 +397,7 @@ app.get('/create-account', function(req, res, next) {
 //Listening for client
 
 app.use(timeout('1s'));
-var server = app.listen(669, function(req, res, next)
+var server = app.listen(668, function(req, res, next)
 {
    console.log('Listening on port %d', server.address().port);
 
